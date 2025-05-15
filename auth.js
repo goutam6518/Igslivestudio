@@ -17,130 +17,138 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// --- Sign Up Functionality ---
+// --- DOM Element IDs (Update these to match your HTML) ---
+const signupForm = document.getElementById('signup-form');
+const signupEmailInput = document.getElementById('signup-email');
+const signupPasswordInput = document.getElementById('signup-password');
+const signupErrorElement = document.getElementById('signup-error');
 
-async function signUp(email, password) {
+const loginForm = document.getElementById('login-form');
+const loginEmailInput = document.getElementById('login-email');
+const loginPasswordInput = document.getElementById('login-password');
+const loginErrorElement = document.getElementById('login-error');
+
+const logoutButton = document.getElementById('logout-button'); // Optional logout button
+const authStatusElement = document.getElementById('auth-status'); // Optional status display
+
+// --- Sign Up Function ---
+async function signUpWithEmailPassword(email, password) {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     console.log('Sign up successful:', user);
-    // You can redirect the user to your app's main page or perform other actions
+    signupErrorElement.textContent = ''; // Clear any previous errors
+    // Optionally redirect the user or update UI
+    alert('Sign up successful! You can now log in.');
+    // Example: window.location.href = '/login.html';
     return user;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error('Sign up error:', errorCode, errorMessage);
-    // Handle specific error codes (e.g., email-already-in-use, weak-password)
-    throw error; // Re-throw the error for the calling function to handle
+    console.error('Sign up error:', error);
+    signupErrorElement.textContent = getErrorMessage(error.code);
+    throw error;
   }
 }
 
-// Example usage for Sign Up (assuming you have input fields with IDs 'signupEmail' and 'signupPassword' and a button with ID 'signupButton')
-document.addEventListener('DOMContentLoaded', () => {
-  const signupForm = document.getElementById('signupForm'); // Assuming you have a form with this ID
-  if (signupForm) {
-    signupForm.addEventListener('submit', async (event) => {
-      event.preventDefault(); // Prevent default form submission
-      const emailInput = document.getElementById('signupEmail');
-      const passwordInput = document.getElementById('signupPassword');
-
-      if (emailInput && passwordInput) {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-
-        try {
-          await signUp(email, password);
-          // Optionally clear the form or show a success message
-          signupForm.reset();
-        } catch (error) {
-          // Display the error message to the user
-          alert(`Sign up failed: ${error.message}`);
-        }
-      } else {
-        console.error('Signup email or password input fields not found.');
-      }
-    });
-  }
-});
-
-// --- Login Functionality ---
-
-async function login(email, password) {
+// --- Login Function ---
+async function loginWithEmailPassword(email, password) {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     console.log('Login successful:', user);
-    // You can redirect the user to your app's main page or perform other actions
+    loginErrorElement.textContent = ''; // Clear any previous errors
+    // Optionally redirect the user to the main application page
+    window.location.href = '/dashboard.html'; // Example redirect
     return user;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error('Login error:', errorCode, errorMessage);
-    // Handle specific error codes (e.g., user-not-found, wrong-password)
-    throw error; // Re-throw the error for the calling function to handle
+    console.error('Login error:', error);
+    loginErrorElement.textContent = getErrorMessage(error.code);
+    throw error;
   }
 }
 
-// Example usage for Login (assuming you have input fields with IDs 'loginEmail' and 'loginPassword' and a button with ID 'loginButton')
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm'); // Assuming you have a form with this ID
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault(); // Prevent default form submission
-      const emailInput = document.getElementById('loginEmail');
-      const passwordInput = document.getElementById('loginPassword');
-
-      if (emailInput && passwordInput) {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-
-        try {
-          await login(email, password);
-          // Optionally clear the form or show a success message
-          loginForm.reset();
-        } catch (error) {
-          // Display the error message to the user
-          alert(`Login failed: ${error.message}`);
-        }
-      } else {
-        console.error('Login email or password input fields not found.');
-      }
-    });
-  }
-});
-
-// --- Sign Out Functionality ---
-
+// --- Sign Out Function (Optional) ---
 async function signOutUser() {
   try {
     await signOut(auth);
     console.log('Sign out successful');
-    // You can redirect the user to the login page or perform other actions
+    // Optionally redirect to the login page or update UI
+    window.location.href = '/login.html'; // Example redirect
   } catch (error) {
     console.error('Sign out error:', error);
+    alert('Error signing out.');
   }
 }
 
-// Example usage for Sign Out (assuming you have a button with ID 'signOutButton')
-document.addEventListener('DOMContentLoaded', () => {
-  const signOutButton = document.getElementById('signOutButton');
-  if (signOutButton) {
-    signOutButton.addEventListener('click', signOutUser);
-  }
-});
+// --- Event Listeners ---
 
-// --- Observe Authentication State (Optional but Recommended) ---
+// Sign Up Form Submission
+if (signupForm) {
+  signupForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = signupEmailInput.value;
+    const password = signupPasswordInput.value;
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = user.uid;
-    console.log('User is signed in:', user);
-    // Update your UI to reflect the logged-in state (e.g., hide login/signup forms, show user dashboard)
-  } else {
-    // User is signed out
-    console.log('User is signed out');
-    // Update your UI to reflect the logged-out state (e.g., show login/signup forms, hide user dashboard)
+    if (email && password) {
+      await signUpWithEmailPassword(email, password);
+    } else {
+      signupErrorElement.textContent = 'Please enter both email and password.';
+    }
+  });
+}
+
+// Login Form Submission
+if (loginForm) {
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = loginEmailInput.value;
+    const password = loginPasswordInput.value;
+
+    if (email && password) {
+      await loginWithEmailPassword(email, password);
+    } else {
+      loginErrorElement.textContent = 'Please enter both email and password.';
+    }
+  });
+}
+
+// Logout Button Click (Optional)
+if (logoutButton) {
+  logoutButton.addEventListener('click', signOutUser);
+}
+
+// --- Authentication State Listener (Optional - for persistent login and UI updates) ---
+if (authStatusElement) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      console.log('User is signed in:', user);
+      authStatusElement.textContent = `Logged in as: ${user.email}`;
+      // Optionally update UI to show logged-in state
+    } else {
+      // User is signed out
+      console.log('User is signed out');
+      authStatusElement.textContent = 'Not logged in.';
+      // Optionally update UI to show logged-out state (e.g., show login form)
+    }
+  });
+}
+
+// --- Helper Function to Get User-Friendly Error Messages ---
+function getErrorMessage(errorCode) {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'The email address is already in use by another account.';
+    case 'auth/invalid-email':
+      return 'The email address is not valid.';
+    case 'auth/user-not-found':
+      return 'There is no user record corresponding to this email.';
+    case 'auth/wrong-password':
+      return 'The password is not valid.';
+    case 'auth/weak-password':
+      return 'The password is too weak.';
+    case 'auth/network-request-failed':
+      return 'Network error, please check your internet connection.';
+    default:
+      return 'An unexpected error occurred. Please try again.';
   }
-});
+}
