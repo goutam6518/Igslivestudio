@@ -1,6 +1,6 @@
 
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js';
 
 // Replace with your Firebase project configuration
 const firebaseConfig = {
