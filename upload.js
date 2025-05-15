@@ -1,4 +1,4 @@
-iImport the functions you need from the SDKs you need
+
 
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
