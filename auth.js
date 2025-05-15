@@ -89,7 +89,7 @@ loginForm.addEventListener('submit', async (e) => {
         console.log("Logged in:", user);
         loginErrorMessage.textContent = "Logged in successfully!";
         // Redirect to your application's main page here
-        window.location.href = '/profile.html''; // Replace with your actual dashboard URL
+        window.location.href = '/profile.html'; // Replace with your actual dashboard URL
     } catch (error) {
         console.error("Error logging in:", error);
         loginErrorMessage.textContent = getFirebaseErrorMessage(error.code);
