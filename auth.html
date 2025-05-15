@@ -3,250 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Sign Up</title>
+    <title>IGS - Login</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
-
         .container {
-            background-color: white;
-            padding: 40px;
+            background-color: #fff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            max-width: 90%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 300px; /* Ensure max-width is set */
+            box-sizing: border-box; /* Include padding in width calculation */
         }
-
-        h2 {
+        .container h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
             margin-bottom: 20px;
         }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        input[type="email"],
-        input[type="password"] {
-            width: calc(100% - 16px);
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+        .container input[type="text"],
+        .container input[type="password"],
+        .container input[type="email"] {
             width: 100%;
-            transition: background-color 0.3s ease;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding in width calculation */
         }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .form-switch {
-            text-align: center;
-            margin-top: 20px;
-            color: #777;
-        }
-
-        .form-switch a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .form-switch a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        #signup-form,
-        #login-form {
-            display: block; /* Initially show both, JavaScript will handle toggling */
-        }
-
-        #toggle-signup,
-        #toggle-login {
-            background: none;
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
             border: none;
-            color: #007bff;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
             cursor: pointer;
-            padding: 0;
-            font-weight: bold;
         }
-
-        #toggle-signup:hover,
-        #toggle-login:hover {
+        .container button:hover {
+            background-color: #4cae4c;
+        }
+        .container .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .container .link a {
+            color: #5cb85c;
+            text-decoration: none;
+        }
+        .container .link a:hover {
             text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .container h2 {
+                font-size: 24px;
+            }
+            .container button {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 10px;
+            }
+            .container h2 {
+                font-size: 20px;
+            }
+            .container button {
+                font-size: 12px;
+            }
         }
     </style>
+
+    <script type="module" src="auth.js" defer></script>
+
 </head>
 <body>
-
     <div class="container">
-        <div id="login-form">
-            <h2>Login</h2>
-            <div class="form-group">
-                <label for="loginEmail">Email:</label>
-                <input type="email" id="loginEmail" name="loginEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="loginPassword">Password:</label>
-                <input type="password" id="loginPassword" name="loginPassword" required>
-            </div>
-            <button onclick="loginWithFirebase()">Login</button>
-            <div class="form-switch">
-                Don't have an account? <button id="toggle-signup">Sign Up</button>
-            </div>
-            <p id="loginError" class="error-message"></p>
-        </div>
-
-        <div id="signup-form" style="display: none;">
-            <h2>Sign Up</h2>
-            <div class="form-group">
-                <label for="signupEmail">Email:</label>
-                <input type="email" id="signupEmail" name="signupEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="signupPassword">Password:</label>
-                <input type="password" id="signupPassword" name="signupPassword" required>
-            </div>
-            <button onclick="signUpWithFirebase()">Sign Up</button>
-            <div class="form-switch">
-                Already have an account? <button id="toggle-login">Login</button>
-            </div>
-            <p id="signupError" class="error-message"></p>
+        <h2>IGS Login</h2>
+        <form>
+            <input id="username" type="text" placeholder="Username" required>
+            <input id="email" type="email" placeholder="Email address" required>
+            <input id="password" type="password" placeholder="Password" required>
+            <button id="loginButton" type="submit">Login</button>
+        </form>
+        <div class="link">
+            <a id="komTxt" href="#">Don't have an account? Create Account</a>
         </div>
     </div>
-
-    
-        
-    <script type="module" src="auth.js" defer>
-    
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js';
-
-        // Replace with your Firebase project configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCRtPZ34Y1J-p5b7FJxEUagYg3h_D6PbhM",
-    authDomain: "igsfogstudio-df541.firebaseapp.com",
-    projectId: "igsfogstudio-df541",
-    storageBucket: "igsfogstudio-df541.firebasestorage.app",
-    messagingSenderId: "206722625476",
-    appId: "1:206722625476:web:9ab922dc4853418af57e91",
-    measurementId: "G-71VB7K6QS6"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        
-        const signupForm = document.getElementById('signup-form');
-const signupEmailInput = document.getElementById('signup-email');
-const signupPasswordInput = document.getElementById('signup-password');
-const signupErrorElement = document.getElementById('signup-error');
-
-        const loginForm = document.getElementById('login-form');
-const loginEmailInput = document.getElementById('login-email');
-const loginPasswordInput = document.getElementById('login-password');
-const loginErrorElement = document.getElementById('login-error');
-
-        toggleSignupButton.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            signupForm.style.display = 'block';
-            loginErrorElement.textContent = '';
-        });
-
-        toggleLoginButton.addEventListener('click', () => {
-            signupForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            signupErrorElement.textContent = '';
-        });
-
-        window.signUpWithFirebase = async () => {
-            const emailInput = document.getElementById('signupEmail');
-            const passwordInput = document.getElementById('signupPassword');
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                console.log('Sign up successful:', user);
-                signupErrorElement.textContent = '';
-                alert('Sign up successful! You can now log in.');
-                // Optionally redirect or update UI
-                signupForm.style.display = 'none';
-                loginForm.style.display = 'block';
-            } catch (error) {
-                console.error('Sign up error:', error);
-                signupErrorElement.textContent = error.message;
-            }
-        };
-
-        window.loginWithFirebase = async () => {
-            const emailInput = document.getElementById('loginEmail');
-            const passwordInput = document.getElementById('loginPassword');
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                console.log('Login successful:', user);
-                loginErrorElement.textContent = '';
-                // Optionally redirect to your app's main page
-                window.location.href = '/dashboard.html'; // Example redirect
-            } catch (error) {
-                console.error('Login error:', error);
-                loginErrorElement.textContent = error.message;
-            }
-        };
-
-        // Optional: Observe authentication state for persistent login
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, redirect or update UI
-                console.log('User is logged in:', user);
-                // window.location.href = '/dashboard.html'; // Redirect if already logged in
-            } else {
-                // User is signed out
-                console.log('User is logged out');
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-            }
-        });
-    </script>
-
 </body>
 </html>
