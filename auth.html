@@ -170,13 +170,16 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        
+        const signupForm = document.getElementById('signup-form');
+const signupEmailInput = document.getElementById('signup-email');
+const signupPasswordInput = document.getElementById('signup-password');
+const signupErrorElement = document.getElementById('signup-error');
 
         const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const toggleSignupButton = document.getElementById('toggle-signup');
-        const toggleLoginButton = document.getElementById('toggle-login');
-        const loginErrorElement = document.getElementById('loginError');
-        const signupErrorElement = document.getElementById('signupError');
+const loginEmailInput = document.getElementById('login-email');
+const loginPasswordInput = document.getElementById('login-password');
+const loginErrorElement = document.getElementById('login-error');
 
         toggleSignupButton.addEventListener('click', () => {
             loginForm.style.display = 'none';
